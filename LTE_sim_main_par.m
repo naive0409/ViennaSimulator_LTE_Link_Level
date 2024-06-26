@@ -117,12 +117,19 @@ tmp_results = repmat(tmp_results,1,size(SNR_vec,2));
 clear UE_res cell_res;
 
 %% Parallel toolbox
-num = matlabpool('size');
-if strcmp(LTE_params.simulation_type,'parallel') && ~num
-    matlabpool('open');
-    %     matlabpool 1
+% num = matlabpool('size');
+% if strcmp(LTE_params.simulation_type,'parallel') && ~num
+%     matlabpool('open');
+%     %     matlabpool 1
+% end
+
+if strcmp(LTE_params.simulation_type,'parallel') && isempty(gcp('nocreate'))
+    parpool;
 end
-par_sched = findResource();
+
+
+% par_sched = findResource();
+par_sched = parcluster();
 
 %% SNR and frame loops
 StartTime = clock;
